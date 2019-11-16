@@ -1,0 +1,30 @@
+{
+    Page(page:1, perPage:10){
+        pageInfo{
+            total
+            currentPage
+            lastPage
+            hasNextPage
+            perPage
+        }
+        media (type: ANIME, status:RELEASING, search:"KEYWORD")
+        {
+            id
+            title{
+                romaji
+                english
+                native
+            }
+            nextAiringEpisode{
+                id
+                airingAt
+                timeUntilAiring
+                episode
+            }
+            coverImage{
+                medium
+                color
+            }
+        }
+    }
+}

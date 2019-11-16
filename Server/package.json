@@ -1,0 +1,18 @@
+{
+  "name": "nevermissanimeserver",
+  "version": "1.0.0",
+  "description": "Notify when an episode of anime is currently broadcasting on TV. Based on AniList API",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "author": "Christophe Mei & Gabin Meyrieux-Drevet",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "isomorphic-fetch": "^2.2.1",
+    "mongoose": "^5.7.11",
+    "nodemon": "^1.19.4"
+  }
+}

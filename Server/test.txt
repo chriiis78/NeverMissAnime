@@ -1,0 +1,16 @@
+Protocole App/Server
+
+App search anime via Anilist
+Récupère une liste d'anime
+Utilisateur clique sur l'anime
+Ca l'ajoute sur sa page Mes Animes
+-> call server pour ajouter l'anime dans la db
+-> stocke id user, id anime, id next episode, number ep, airing time
+
+Routine sur server
+Dès qu'un anime commence
+-> server requête sur l'anime pour avoir le prochain épisode
+-> Envoi un push via firebase avec id firebase de l'user avec les infos du prochain épisode
+-> Supprimer l'ancien épisode dans la db server
+-> affiche la notif sur smartphone
+-> supprime l'ancien ep et ajoute le nouvel ep
