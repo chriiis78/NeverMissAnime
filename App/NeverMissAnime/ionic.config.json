@@ -1,0 +1,7 @@
+{
+  "name": "NeverMissAnime",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
