@@ -5,13 +5,14 @@ let users = require("./model/users")
 require('isomorphic-fetch');
 var fs = require("fs")
 let util = require("util")
-
+var cors = require('cors');
 var app = express()
 
 mongoose.connect("mongodb://localhost:27017/users", {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(cors());
 
 app.post("/addepisode", async (req, res) => {
     console.log(req.body)

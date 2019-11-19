@@ -1,9 +1,27 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>listAnimes</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Search for animes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="searchChanged($event)"></ion-searchbar>
+ 
+  <ion-list>
+ 
+    <ion-item button *ngFor="let item of (results | async)" [routerLink]="['/', 'list-animes', item.imdbID]">
+      <ion-avatar slot="start">
+        <img [src]="item.coverImage.medium">
+      </ion-avatar>
+ 
+      <ion-label text-wrap>
+        <h3>{{ item.title.english }}</h3>
+        
+      </ion-label>
+ 
+      <ion-icon slot="end" name="alarm"></ion-icon>
+ 
+    </ion-item>
+ 
+  </ion-list>
 </ion-content>
