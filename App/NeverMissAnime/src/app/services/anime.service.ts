@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AnimeService {
-  url = 'localhost:8080';
+  url = 'http://localhost:8080';
   apiKey = ''; // <-- Enter your own key here!
   constructor(private http: HttpClient) { }
 
