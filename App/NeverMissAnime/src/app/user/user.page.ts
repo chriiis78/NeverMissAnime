@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LoadingController } from '@ionic/angular';
+import { GoogleService } from '../services/google.service'
 
 @Component({
   selector: 'app-user',
