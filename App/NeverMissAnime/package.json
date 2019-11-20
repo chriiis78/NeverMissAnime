@@ -29,7 +29,9 @@
     "angularfire2": "^5.2.3",
     "cordova-android": "^8.1.0",
     "cordova-ios": "^5.0.1",
-    "cordova-plugin-firebase": "^2.0.5",
+    "cordova-plugin-androidx": "^1.0.2",
+    "cordova-plugin-androidx-adapter": "^1.1.0",
+    "cordova-plugin-firebasex": "^7.0.1",
     "cordova-plugin-googleplus": "^8.2.0",
     "cordova-plugin-nativestorage": "^2.3.2",
     "core-js": "^2.5.4",
@@ -78,10 +80,13 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "192087476268-j5a7ujk57d50tm782a2ndd53oj0i1nda.apps.googleusercontent.com"
+        "REVERSED_CLIENT_ID": "192087476268-j5a7ujk57d50tm782a2ndd53oj0i1nda.apps.googleusercontent.com",
+        "PLAY_SERVICES_VERSION": "15.0.1"
       },
       "cordova-plugin-nativestorage": {}
     },
