@@ -9,17 +9,17 @@
  
   <ion-list>
  
-    <ion-item button *ngFor="let item of (results | async)" [routerLink]="['/', 'list-animes', item.imdbID]">
+    <ion-item  *ngFor="let item of (results | async)">
+      
       <ion-avatar slot="start">
         <img [src]="item.coverImage.medium">
       </ion-avatar>
  
       <ion-label text-wrap>
-        <h3>{{ item.title.english }}</h3>
-        
+        <h3 *ngIf="item.title.english;else noEnglishTitle">{{ item.title.english }}</h3>
+        <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
       </ion-label>
- 
-      <ion-icon slot="end" name="alarm"></ion-icon>
+      <ion-checkbox></ion-checkbox>
  
     </ion-item>
  

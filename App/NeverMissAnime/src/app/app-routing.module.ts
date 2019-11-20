@@ -3,14 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' },
-  {
-    path: 'list-animes',
-    loadChildren: () => import('./list-animes/list-animes.module').then( m => m.ListAnimesPageModule)
-  },
-  {
-    path: 'user-animes',
-    loadChildren: () => import('./user-animes/user-animes.module').then( m => m.UserAnimesPageModule)
-  },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' }
 ];
 
 @NgModule({
