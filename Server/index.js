@@ -2,6 +2,7 @@ let express = require("express")
 let bodyParser = require("body-parser")
 let mongoose = require("mongoose")
 let users = require("./model/users")
+let episodes = require("./model/episodes")
 require('isomorphic-fetch');
 var fs = require("fs")
 let util = require("util")
@@ -14,12 +15,43 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors());
 
+app.get("/", async (req, res) => {
+    res.send("Welcome to NeverMissAnime!")
+    return
+    let list = await users.find()
+    await res.json(list)
+})
+
 app.post("/addepisode", async (req, res) => {
     console.log(req.body)
     let userid = req.body.userid
     let animeid = req.body.animeid
     let episodeid = req.body.episodeid
     let airingtime = req.body.airingtime
+    let media = req.body.media
+    
+    if (!userid || !animeid || !episodeid || !airingtime || !media) {
+        res.send("Invalid request")
+        return
+    }
+
+    let newep = new episodes({
+        userid : userid,
+        animeid : animeid,
+        episodeid : episodeid,
+        airingtime : airingtime,
+        media : media
+    })
+
+    await newep.save()
+    res.json(newep)
+    return
+})
+
+app.post("/adduser", async (req, res) => {
+    console.log(req.body)
+    let userid = req.body.userid
+    let name = req.body.name
     
     if (!userid || !name) {
         res.send("Invalid request")
@@ -36,9 +68,10 @@ app.post("/addepisode", async (req, res) => {
     return
 })
 
-app.get("/", async (req, res) => {
-    let list = await users.find()
-    await res.json(list)
+app.get("/useranimes", async (req, res) => {
+    let id = req.query.id
+    let list = await episodes.find({userid : id})
+    res.json(list)
 })
 
 app.get("/search", async (req, response) => {
@@ -61,13 +94,10 @@ app.get("/search", async (req, response) => {
     
 })
 
-app.get("/user/:id", async (req, res) => {
-    let id = req.params.id
+app.get("/user", async (req, res) => {
+    let id = req.query.id
     let user = await users.findOne({userid : id})
     res.json(user)
 })
-
-
-
 
 app.listen(8080)
