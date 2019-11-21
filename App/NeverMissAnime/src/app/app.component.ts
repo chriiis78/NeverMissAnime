@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { UserAnimesPage } from './user-animes/user-animes.page';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: Storage,
-    private router: Router
+    private router: Router,
+    private userAnimesPage: UserAnimesPage
   ) {
     this.initializeApp();
   }
@@ -25,18 +27,19 @@ export class AppComponent {
     this.platform.ready().then(() => {
       //Here we will check if the user is already logged in
       //because we don't want to ask users to log in each time they open the app
-  /*    this.storage.get('google_user')
+      this.storage.get('google_user')
       .then( data => {
         //user is previously logged and we have his data
-        //we will let him access the app*/
+        //we will let him access the app
         console.log("Google_user is saved");
+        this.userAnimesPage.refreshAnimes();
         this.router.navigate(["/tabs"]);
         this.splashScreen.hide();
-      /*}, err => {
+      }, err => {
         console.log("Google_user is no saved");
         this.router.navigate(["/login"]);
         this.splashScreen.hide();
-      })*/
+      })
       this.statusBar.styleDefault();
     });;
   }
