@@ -18,6 +18,9 @@ import { AngularFireAuthModule }  from 'angularfire2/auth'
 import { UserAnimesPage } from './user-animes/user-animes.page';
 import { IonicStorageModule } from '@ionic/storage';
 
+import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
+import { FCM } from '@ionic-native/fcm/ngx'
+
 const firebaseConfig = {
   apiKey: "AIzaSyBbz94jZI4Uy_P4yAKJlAs_CG9gcFNUkZ4",
   authDomain: "nevermissanime.firebaseapp.com",
@@ -39,9 +42,11 @@ const firebaseConfig = {
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     IonicStorageModule.forRoot()
   ],
   providers: [
+    FCM,
     StatusBar,
     SplashScreen,
     GooglePlus,

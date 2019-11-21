@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:123:android:123",
         "android_client_info": {
-          "package_name": "com.github.cordova_plugin_firebase"
+          "package_name": "com.lbb.nevermissanime"
         }
       },
       "oauth_client": [
