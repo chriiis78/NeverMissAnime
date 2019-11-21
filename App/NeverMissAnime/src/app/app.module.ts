@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule }  from 'angularfire2/auth'
 import { UserAnimesPage } from './user-animes/user-animes.page';
+import { IonicStorageModule } from '@ionic/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBbz94jZI4Uy_P4yAKJlAs_CG9gcFNUkZ4",
@@ -37,7 +38,8 @@ const firebaseConfig = {
     HttpClientModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,

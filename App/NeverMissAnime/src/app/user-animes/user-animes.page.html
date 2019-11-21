@@ -6,9 +6,9 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let item of (userAnimes | async)">
+    <ion-item *ngFor="let item of animes">
       <ion-card>
-        <img src="item.coverImage.medium"/>
+        <img [src]="item.coverImage.medium"/>
         <ion-card-content>
             <ion-card-title *ngIf="item.title.english;else noEnglishTitle">{{ item.title.english }}</ion-card-title>
             <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
@@ -16,7 +16,7 @@
             Next airing episode : {{ item.nextAiringEpisode.episode }}
             </ion-card-subtitle>
             <ion-label *ngIf="item.nextAiringEpisode"> {{ item.nextAiringEpisode.timeUntilAiring | date: "dd' days and 'HH:mm" }} </ion-label>
-            <ion-icon name="close" (click)="remove(item.id)" ></ion-icon>
+            <ion-icon name="close" (click)="remove(item)" ></ion-icon>
         </ion-card-content>
       </ion-card>
     </ion-item>

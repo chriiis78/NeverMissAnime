@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Router } from '@angular/router';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
@@ -15,7 +15,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private nativeStorage: NativeStorage,
+    private storage: Storage,
     private router: Router
   ) {
     this.initializeApp();
@@ -25,7 +25,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       //Here we will check if the user is already logged in
       //because we don't want to ask users to log in each time they open the app
-  /*    this.nativeStorage.getItem('google_user')
+  /*    this.storage.get('google_user')
       .then( data => {
         //user is previously logged and we have his data
         //we will let him access the app*/

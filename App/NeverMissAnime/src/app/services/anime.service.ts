@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Storage } from '@ionic/storage';
 import { UserAnimesPage } from '../user-animes/user-animes.page';
 import { stringify } from 'querystring';
 
@@ -11,56 +11,77 @@ import { stringify } from 'querystring';
 })
 export class AnimeService {
   url = 'http://localhost:8080';
+  //url = 'http://176.175.62.122:8080';
   apiKey = ''; // <-- Enter your own key here!
   searchAnimes: Observable<any>
+  userAnimesPage: UserAnimesPage;
   constructor(private http: HttpClient,
-              private nativeStorage: NativeStorage,
-              private userAnimesPage: UserAnimesPage) { }
+              private storage: Storage) { }
 
   searchData(title: string): Observable<any> {
     if (title.length == 0)
       return null;
     console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+    var searchFilter: any[]
     this.searchAnimes = this.http.get(`${this.url}/search?keyword=${encodeURI(title)}`).pipe(
       map(results => results['Page']['media'])
-    );
+    )
     return this.searchAnimes;
+  }
+
+  setUserAnimePage(userAnimePage: UserAnimesPage)  {
+    this.userAnimesPage = userAnimePage;
+  }
+
+  userLoggedIn()
+  {
+    this.storage.get('google_user').then(function(value) {
+    const options = {
+      headers: new HttpHeaders()
+      .append('Accept', 'application/json')
+      .append("Content-Type", 'application/json'),
+      params: new HttpParams()
+      .append('userid', value['id'])
+      .append('name', value['name'])
+    }
+    this.http.post(`${this.url}/adduser`, options)
+    })
   }
   
   getUserAnimes(): Observable<any> {
-    const options = {
-      //headers: new HttpHeaders()
-      //.append('Accept', 'application/json')
-      //.append("Content-Type", 'application/json'),
-      params: new HttpParams()
-      .append('name', this.nativeStorage.getItem('google_user')['name'])
-    }
-    return this.http.post(`${this.url}/user-animes`, options).pipe(
-      map(results => results['Animes'])
-    );
+      return this.http.get(`${this.url}/useranimes?userid=111`)
   }
 
-  addUserAnimeID(AnimeID: any) {
+  addUserAnime(Anime: any) {
+    this.storage.get('google_user').then(function(value) {
     const options = {
       headers: new HttpHeaders()
       .append('Accept', 'application/json')
       .append("Content-Type", 'application/json'),
-      params: new HttpParams()
-      .append('name', this.nativeStorage.getItem('google_user')['name'])
-      .append('AnimeID', AnimeID)
     }
-    this.userAnimesPage.userAnimes = this.http.post(`${this.url}/add-anime`, options);
+    this.http.post(`${this.url}/addepisode`,
+    {
+      userid: value['id'],
+      episodeid: (Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null
+    }, options);
+    this.userAnimesPage.animes.push(Anime);
+    })
   }
 
-  removeUserAnimeID(AnimeID: any) {
-    const options = {
-      headers: new HttpHeaders()
-      .append('Accept', 'application/json')
-      .append("Content-Type", 'application/json'),
-      params: new HttpParams()
-      .append('name', this.nativeStorage.getItem('google_user')['name'])
-      .append('AnimeID', AnimeID)
-    }
-    this.userAnimesPage.userAnimes = this.http.post(`${this.url}/remove-anime`, options);
+  removeUserAnime(Anime: any) {
+    this.storage.get('google_user').then(function(value) {
+      const options = {
+        headers: new HttpHeaders()
+        .append('Accept', 'application/json')
+        .append("Content-Type", 'application/json'),
+        params: new HttpParams()
+        .append('userid', value['id'])
+        .append('animeid', Anime['id'])
+        .append('episodeid', (Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null)
+        .append('airingtime', (Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null)
+        .append('media', Anime)
+      }
+      this.http.post(`${this.url}/removeepisode`, options)
+    })
   }
 }

@@ -9,7 +9,7 @@
  
   <ion-list>
  
-    <ion-item  *ngFor="let item of animes">
+    <ion-button  *ngFor="let item of animes" (click)="addAnime(item)">
       
       <ion-avatar slot="start">
         <img [src]="item.coverImage.medium">
@@ -20,9 +20,8 @@
         <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
       </ion-label>
       <ion-label *ngIf="item.nextAiringEpisode"> {{ item.nextAiringEpisode.timeUntilAiring * 1000 | date: "dd' days and 'HH:mm:ss" }} </ion-label>
-      <ion-checkbox ></ion-checkbox>
  
-    </ion-item>
+    </ion-button>
  
   </ion-list>
 </ion-content>
