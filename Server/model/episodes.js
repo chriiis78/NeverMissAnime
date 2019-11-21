@@ -3,7 +3,7 @@ let mongoose = require("mongoose")
 let schema = mongoose.Schema({
     userid : String,
     animeid : Number,
-    episodeid : { type: Number, unique: true },
+    episodeid : Number,
     airingtime : Number,
     media : JSON
 })

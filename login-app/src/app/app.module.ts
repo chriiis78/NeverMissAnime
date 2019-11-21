@@ -13,6 +13,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule }  from 'angularfire2/auth'
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
+import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
+import { FCM } from '@ionic-native/fcm/ngx'
+
 const firebaseConfig = {
   apiKey: "AIzaSyBbz94jZI4Uy_P4yAKJlAs_CG9gcFNUkZ4",
   authDomain: "nevermissanime.firebaseapp.com",
@@ -32,9 +35,11 @@ const firebaseConfig = {
     IonicModule.forRoot(), 
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
   providers: [
+    FCM,
     GooglePlus,
     StatusBar,
     SplashScreen,

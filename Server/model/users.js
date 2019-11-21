@@ -1,7 +1,7 @@
 let mongoose = require("mongoose")
 
 let schema = mongoose.Schema({
-    userid : { type: String, unique: true },
+    userid : String,
     name : String
 })
 

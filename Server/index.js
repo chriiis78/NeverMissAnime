@@ -43,9 +43,22 @@ app.post("/addepisode", async (req, res) => {
         media : media
     })
 
-    await newep.save()
+    newep = await episodes.findOneAndUpdate({userid: userid, episodeid: episodeid}, {animeid: animeid, airingtime: airingtime, media: media}, {upsert: true, new: true, setDefaultOnInsert: newep})
     res.json(newep)
     return
+})
+
+app.post("/removeepisode", async (req, res) => {
+    let userid = req.body.userid
+    let episodeid = req.body.episodeid
+    
+    if (!userid || !episodeid) {
+        res.send("Invalid request")
+        return
+    }
+
+    let ep = await episodes.deleteOne({userid : userid, episodeid: episodeid})
+    res.json(ep)
 })
 
 app.post("/adduser", async (req, res) => {
@@ -63,14 +76,14 @@ app.post("/adduser", async (req, res) => {
         name : name
     })
 
-    await newuser.save()
+    newuser = await users.findOneAndUpdate({userid: userid}, {name: name}, {upsert: true, new: true, setDefaultOnInsert: newuser})
     res.json(newuser)
     return
 })
 
 app.get("/useranimes", async (req, res) => {
-    let id = req.query.id
-    let list = await episodes.find({userid : id})
+    let userid = req.query.userid
+    let list = await episodes.find({userid : userid})
     res.json(list)
 })
 
