@@ -6,22 +6,17 @@
 
 <ion-content>
   <ion-list>
-    <ion-item>
+    <ion-item *ngFor="let item of (userAnimes | async)">
       <ion-card>
-        <img src="../../assets/Miku-Hatsune-PNG-Image-HD.png"/>
+        <img src="item.coverImage.medium"/>
         <ion-card-content>
-          <ion-card-title>
-            Anime Name
-            </ion-card-title>
+            <ion-card-title *ngIf="item.title.english;else noEnglishTitle">{{ item.title.english }}</ion-card-title>
+            <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
             <ion-card-subtitle>
-            EP : 25
-          </ion-card-subtitle>
-          <ion-item>
-          <ion-card-subtitle>
-            
-          </ion-card-subtitle>          
-            <ion-icon name="alarm"></ion-icon>
-          </ion-item>
+            Next airing episode : {{ item.nextAiringEpisode.episode }}
+            </ion-card-subtitle>
+            <ion-label *ngIf="item.nextAiringEpisode"> {{ item.nextAiringEpisode.timeUntilAiring | date: "dd' days and 'HH:mm" }} </ion-label>
+            <ion-icon name="close" (click)="remove(item.id)" ></ion-icon>
         </ion-card-content>
       </ion-card>
     </ion-item>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-animes',
@@ -12,4 +14,9 @@ export class UserAnimesPage implements OnInit {
   ngOnInit() {
   }
 
+  public userAnimes: Observable<any>
+
+  animesCountDown() {
+    
+  }
 }

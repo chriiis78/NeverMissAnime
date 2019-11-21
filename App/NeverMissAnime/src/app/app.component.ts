@@ -25,16 +25,18 @@ export class AppComponent {
     this.platform.ready().then(() => {
       //Here we will check if the user is already logged in
       //because we don't want to ask users to log in each time they open the app
-      this.nativeStorage.getItem('google_user')
+  /*    this.nativeStorage.getItem('google_user')
       .then( data => {
         //user is previously logged and we have his data
-        //we will let him access the app
+        //we will let him access the app*/
+        console.log("Google_user is saved");
         this.router.navigate(["/tabs"]);
         this.splashScreen.hide();
-      }, err => {
+      /*}, err => {
+        console.log("Google_user is no saved");
         this.router.navigate(["/login"]);
         this.splashScreen.hide();
-      })
+      })*/
       this.statusBar.styleDefault();
     });;
   }

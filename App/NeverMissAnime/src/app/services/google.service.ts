@@ -52,6 +52,7 @@ export class GoogleService {
         email: credential.user.email,
         picture: null,
       })
+      console.log("Google_user save");
       this.router.navigate(["/tabs"]);
       return credential;
     } catch(err) {

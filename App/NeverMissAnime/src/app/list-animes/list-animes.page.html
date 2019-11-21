@@ -9,7 +9,7 @@
  
   <ion-list>
  
-    <ion-item  *ngFor="let item of (results | async)">
+    <ion-item  *ngFor="let item of animes">
       
       <ion-avatar slot="start">
         <img [src]="item.coverImage.medium">
@@ -19,7 +19,8 @@
         <h3 *ngIf="item.title.english;else noEnglishTitle">{{ item.title.english }}</h3>
         <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
       </ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-label *ngIf="item.nextAiringEpisode"> {{ item.nextAiringEpisode.timeUntilAiring * 1000 | date: "dd' days and 'HH:mm:ss" }} </ion-label>
+      <ion-checkbox ></ion-checkbox>
  
     </ion-item>
  

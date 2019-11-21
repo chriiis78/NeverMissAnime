@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { AnimeService } from './/../services/anime.service';
-import { Observable } from 'rxjs';
+import { Observable, interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-animes',
@@ -8,15 +9,27 @@ import { Observable } from 'rxjs';
   styleUrls: ['./list-animes.page.scss'],
 })
 export class ListAnimesPage implements OnInit {
-  results: Observable<any>;
+  animes: any[];
   searchTerm: string = '';
-  constructor(private animeService: AnimeService) { }
+  constructor(private animeService: AnimeService) { 
+    var timer = interval(1000) 
+    .subscribe((val) => { this.updateAiringTime(); });
+  }
 
   ngOnInit() {
   }
 
   searchChanged() {
-    // Call our service function which returns an Observable
-    this.results = this.animeService.searchData(this.searchTerm);
+    this.animeService.searchData(this.searchTerm).subscribe(animes => this.animes = animes);
+  }
+
+  updateAiringTime()
+  {
+    if (this.animes == null)
+      return;
+    this.animes.forEach(element => {
+      if (element["nextAiringEpisode"])
+        element["nextAiringEpisode"]["timeUntilAiring"] -= 1;
+    });
   }
 }
