@@ -55,6 +55,15 @@ export class ListAnimesPage implements OnInit {
 
   addAnime(Anime: any)
   {
-    this.animeService.addUserAnime(Anime);
+    this.animeService.addUserAnime(Anime)
+    for (var idx = 0; idx < this.animes.length; idx++)
+    {
+      if (Anime['id'] == this.animes[idx]['id'])
+      {
+        console.log(Anime['id'] + ":" +  this.animes[idx]['id'])
+        this.animes.splice(idx, 1)
+        break;
+      }
+    }
   }
 }

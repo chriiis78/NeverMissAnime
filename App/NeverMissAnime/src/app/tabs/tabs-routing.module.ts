@@ -27,14 +27,14 @@ const routes: Routes = [
     },
     {
       path: '',
-      redirectTo: '/tabs/list-animes',
+      redirectTo: '/tabs/user-animes',
       pathMatch: 'full'
     }
   ]
 },
 {
   path: '',
-  redirectTo: '/tabs/list-animes',
+  redirectTo: '/tabs/user-animes',
   pathMatch: 'full'
 }
 ];

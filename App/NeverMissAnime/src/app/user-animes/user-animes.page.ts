@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AnimeService } from '../services/anime.service'
 
@@ -9,18 +9,33 @@ import { AnimeService } from '../services/anime.service'
   styleUrls: ['./user-animes.page.scss'],
 })
 export class UserAnimesPage implements OnInit {
-  animes: any[];
+  animes: any[] = [];
   constructor(private animeService: AnimeService) {
+    console.log("CONSCTRU USER ANIME")
     animeService.setUserAnimePage(this);
     this.refreshAnimes()
+    var timer = interval(1000) 
+    .subscribe((val) => { this.updateAiringTime(); });
    }
 
   ngOnInit() {
   }
 
+  updateAiringTime()
+  {
+    console.log(this.animes.length);
+    this.animes.forEach(element => {
+      if (element["nextAiringEpisode"])
+        element["nextAiringEpisode"]["timeUntilAiring"] -= 1;
+    });
+  }
+
   refreshAnimes()
   {
-    this.animeService.getUserAnimes().subscribe(animes => {
+    console.log("Refresh");
+    var tmp = this.animeService.getUserAnimes()
+    if (tmp != null)
+      tmp.subscribe(animes => {
       var tmpArray: any[] = []
       console.log("Animes:" + JSON.stringify(animes));
       animes.forEach(element => {

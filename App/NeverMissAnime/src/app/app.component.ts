@@ -24,21 +24,23 @@ export class AppComponent {
   }
 
   initializeApp() {
+    this.storage.remove('google_user');
     this.platform.ready().then(() => {
-      //Here we will check if the user is already logged in
-      //because we don't want to ask users to log in each time they open the app
       this.storage.get('google_user')
       .then( data => {
-        //user is previously logged and we have his data
-        //we will let him access the app
-        console.log("Google_user is saved");
-        this.userAnimesPage.refreshAnimes();
-        this.router.navigate(["/tabs"]);
-        this.splashScreen.hide();
-      }, err => {
-        console.log("Google_user is no saved");
-        this.router.navigate(["/login"]);
-        this.splashScreen.hide();
+        if (data != null)
+        {
+          this.userAnimesPage.refreshAnimes();
+          this.router.navigate(["/tabs"]);
+          this.splashScreen.hide();
+          console.log("Google_user is saved");
+        }
+        else
+        {
+          console.log("Google_user is no saved");
+          this.router.navigate(["/login"]);
+          this.splashScreen.hide();
+        }
       })
       this.statusBar.styleDefault();
     });;

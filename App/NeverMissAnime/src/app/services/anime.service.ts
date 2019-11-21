@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, DebugElement } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,8 +10,8 @@ import { stringify } from 'querystring';
   providedIn: 'root'
 })
 export class AnimeService {
-  url = 'http://localhost:8080';
-  //url = 'http://176.175.62.122:8080';
+  //url = 'http://localhost:8080';
+  url = 'http://176.175.62.122:8080';
   apiKey = ''; // <-- Enter your own key here!
   searchAnimes: Observable<any>
   userAnimesPage: UserAnimesPage;
@@ -35,6 +35,8 @@ export class AnimeService {
 
   userLoggedIn()
   {
+    console.log("UserLogged")
+    var that = this;
     this.storage.get('google_user').then(function(value) {
     const options = {
       headers: new HttpHeaders()
@@ -44,27 +46,36 @@ export class AnimeService {
       .append('userid', value['id'])
       .append('name', value['name'])
     }
-    this.http.post(`${this.url}/adduser`, options)
+    that.http.post(`${that.url}/adduser`, options)
     })
   }
   
   getUserAnimes(): Observable<any> {
-      return this.http.get(`${this.url}/useranimes?userid=111`)
+    var that = this;
+    console.log("GET USER ANIMES")
+    this.storage.get('google_user').then(function(value) {
+      if (value != null)
+        return that.http.get(that.url + "/useranimes?userid=" + value['id'])
+    })
+    return null;
   }
 
   addUserAnime(Anime: any) {
+    var that = this;
+    console.log("DRTFYIYGU:" + ((Anime['nextAiringEpisode'] != null) ? Anime['nextAiringEpisode']['id'] : "no airing"));
     this.storage.get('google_user').then(function(value) {
-    const options = {
-      headers: new HttpHeaders()
-      .append('Accept', 'application/json')
-      .append("Content-Type", 'application/json'),
-    }
-    this.http.post(`${this.url}/addepisode`,
-    {
-      userid: value['id'],
-      episodeid: (Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null
-    }, options);
-    this.userAnimesPage.animes.push(Anime);
+      console.log("UserID:" + value['id'])
+      const options = {
+        headers: new HttpHeaders()
+        .append('Accept', 'application/json')
+        .append("Content-Type", 'application/json'),
+      }
+      that.http.post(`${that.url}/addepisode`,
+      {
+        userid: value['id'],
+        episodeid: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null)
+      }, options)
+      that.userAnimesPage.animes.push(Anime);
     })
   }
 
@@ -77,8 +88,8 @@ export class AnimeService {
         params: new HttpParams()
         .append('userid', value['id'])
         .append('animeid', Anime['id'])
-        .append('episodeid', (Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null)
-        .append('airingtime', (Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null)
+        .append('episodeid', ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null))
+        .append('airingtime', ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null))
         .append('media', Anime)
       }
       this.http.post(`${this.url}/removeepisode`, options)

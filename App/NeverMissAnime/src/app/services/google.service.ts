@@ -39,16 +39,19 @@ export class GoogleService {
       })
 
       var credential = await this.afAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken))
-      this.user.subscribe(user => this.storage.set('google_user', {
+      this.user.subscribe(user => { 
+        this.storage.set('google_user', {
         id: user.uid,
         name: gplusUser.displayName,
         email: gplusUser.email,
         picture: gplusUser.imageUrl,
-      }))
-      this.animeService.userLoggedIn()
-      console.log(this.storage.get('google_user')['id']);
-      this.userAnimesPage.refreshAnimes();
-      this.router.navigate(["/tabs"]);      
+      }).then(value => {
+
+        this.animeService.userLoggedIn()
+        this.userAnimesPage.refreshAnimes();
+        this.router.navigate(["/tabs"]);
+        })
+      })
       return credential;
     } catch(err) {
       console.log(err)
@@ -65,13 +68,13 @@ export class GoogleService {
         name: credential.user.displayName,
         email: credential.user.email,
         picture: null,
-      })
-      this.storage.get('google_user').then(function(value) {
-        console.log("UID:" + value['id']);
-      })
+      }).then(value => {
+
+        this.animeService.userLoggedIn()
+        this.userAnimesPage.refreshAnimes();
+        this.router.navigate(["/tabs"]);
+        })
     })
-      this.userAnimesPage.refreshAnimes();
-      this.router.navigate(["/tabs"]);
       return credential;
     } catch(err) {
       console.log(err)
