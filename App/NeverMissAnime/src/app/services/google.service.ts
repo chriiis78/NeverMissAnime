@@ -40,16 +40,18 @@ export class GoogleService {
 
       var credential = await this.afAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken))
       this.user.subscribe(user => { 
+        console.log("LOOOOOOOOOOOOOOOOOOOOOG")
+
         this.storage.set('google_user', {
         id: user.uid,
         name: gplusUser.displayName,
         email: gplusUser.email,
         picture: gplusUser.imageUrl,
       }).then(value => {
-
+        console.log("LOOOOOOOOOOOOOOOOOOOOOG")
         this.animeService.userLoggedIn()
         this.userAnimesPage.refreshAnimes();
-        this.router.navigate(["/tabs"]);
+        this.router.navigateByUrl("/tabs");
         })
       })
       return credential;
@@ -61,7 +63,7 @@ export class GoogleService {
   async webGoogleLogin(): Promise<firebase.auth.UserCredential> {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
-      var credential = await this.afAuth.auth.signInWithPopup(provider);
+      var credential = await this.afAuth.auth.signInWithRedirect(provider);
       this.user.subscribe(user => {
         this.storage.set('google_user', {
         id: user.uid,
@@ -72,7 +74,7 @@ export class GoogleService {
 
         this.animeService.userLoggedIn()
         this.userAnimesPage.refreshAnimes();
-        this.router.navigate(["/tabs"]);
+        this.router.navigateByUrl("/tabs");
         })
     })
       return credential;
@@ -82,6 +84,8 @@ export class GoogleService {
   }
 
   googleLogin() {
+    this.webGoogleLogin();
+    return
     if (this.platform.is('cordova')) {
       this.nativeGoogleLogin();
     } else {

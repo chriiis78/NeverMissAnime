@@ -34,19 +34,19 @@ export class AppComponent {
         if (data != null)
         {
           this.userAnimesPage.refreshAnimes();
-          this.router.navigate(["/tabs"]);
           this.splashScreen.hide();
+          this.router.navigateByUrl("/tabs");
           console.log("Google_user is saved");
         }
         else
         {
           console.log("Google_user is no saved");
-          this.router.navigate(["/login"]);
           this.splashScreen.hide();
+          this.router.navigateByUrl("/login");
         }
       })
       this.statusBar.styleDefault();
-
+      
       // FIREBASE PUSH NOTIFICATION
       this.fcm.getToken().then(token => {
         console.log(token);
