@@ -63,7 +63,7 @@ export class GoogleService {
   async webGoogleLogin(): Promise<firebase.auth.UserCredential> {
     try {
       const provider = new firebase.auth.GoogleAuthProvider();
-      var credential = await this.afAuth.auth.signInWithRedirect(provider);
+      var credential = await this.afAuth.auth.signInWithPopup(provider);
       this.user.subscribe(user => {
         this.storage.set('google_user', {
         id: user.uid,
