@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "192087476268",
+    "firebase_url": "https://nevermissanime.firebaseio.com",
+    "project_id": "nevermissanime",
+    "storage_bucket": "nevermissanime.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192087476268:android:23b7b7acd3ce5dd6c9a989",
+        "android_client_info": {
+          "package_name": "com.lbb.nevermissanime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192087476268-keohalh88389ubs59vsopn5qrcprcoih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lbb.nevermissanime",
+            "certificate_hash": "f0d251be600ee8b8cce8880ef8624d458666d913"
+          }
+        },
+        {
+          "client_id": "192087476268-j5a7ujk57d50tm782a2ndd53oj0i1nda.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBglyM1UMoD4a_9Gp_GazRqARF7VCWg3ng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192087476268-j5a7ujk57d50tm782a2ndd53oj0i1nda.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "192087476268-e1jf3mk8f1r8aaks096btsdcg8dmjgce.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lbb.nevermissanime"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
