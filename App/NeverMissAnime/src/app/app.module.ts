@@ -15,7 +15,6 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule }  from 'angularfire2/auth'
-import { UserAnimesPage } from './user-animes/user-animes.page';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
@@ -51,7 +50,6 @@ const firebaseConfig = {
     SplashScreen,
     GooglePlus,
     NativeStorage,
-    UserAnimesPage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

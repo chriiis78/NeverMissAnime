@@ -23,9 +23,8 @@ export class UserAnimesPage implements OnInit {
 
   updateAiringTime()
   {
-    console.log(this.animes.length);
     this.animes.forEach(element => {
-      if (element["nextAiringEpisode"])
+      if (element["nextAiringEpisode"] != null)
         element["nextAiringEpisode"]["timeUntilAiring"] -= 1;
     });
   }
@@ -33,20 +32,7 @@ export class UserAnimesPage implements OnInit {
   refreshAnimes()
   {
     console.log("Refresh");
-    var tmp = this.animeService.getUserAnimes()
-    if (tmp != null)
-      tmp.subscribe(animes => {
-      var tmpArray: any[] = []
-      console.log("Animes:" + JSON.stringify(animes));
-      animes.forEach(element => {
-        tmpArray.push(JSON.parse(element['media']))
-      });
-      this.animes = tmpArray;
-      console.log("Animes:" + JSON.stringify(this.animes));
-    })
-  }
-
-  animesCountDown() {
+    this.animeService.getUserAnimes()
   }
 
   removeAnime(anime: any) {

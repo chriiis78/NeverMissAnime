@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { UserAnimesPage } from './user-animes/user-animes.page';
 
 import { FCM } from '@ionic-native/fcm/ngx';
 
@@ -20,20 +19,17 @@ export class AppComponent {
     private statusBar: StatusBar,
     private storage: Storage,
     private router: Router,
-    private userAnimesPage: UserAnimesPage,
     private fcm: FCM
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
-    this.storage.remove('google_user');
     this.platform.ready().then(() => {
       this.storage.get('google_user')
       .then( data => {
         if (data != null)
         {
-          this.userAnimesPage.refreshAnimes();
           this.splashScreen.hide();
           this.router.navigate(["/tabs"]);
           console.log("Google_user is saved");

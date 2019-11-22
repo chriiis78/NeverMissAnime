@@ -4,6 +4,7 @@ import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
 import { UserAnimesPage } from '../user-animes/user-animes.page';
+import { ListAnimesPage } from '../list-animes/list-animes.page';
 import { stringify } from 'querystring';
 
 @Injectable({
@@ -18,7 +19,9 @@ export class AnimeService {
   constructor(private http: HttpClient,
               private storage: Storage) { }
 
-  searchData(title: string): Observable<any> {
+  searchData(title: string, listAnimePage: ListAnimesPage): Observable<any> {
+    if (listAnimePage.userAnimesPage == null)
+      listAnimePage.userAnimesPage =this.userAnimesPage
     if (title.length == 0)
       return null;
     console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
@@ -38,61 +41,92 @@ export class AnimeService {
     console.log("UserLogged")
     var that = this;
     this.storage.get('google_user').then(function(value) {
-    const options = {
-      headers: new HttpHeaders()
-      .append('Accept', 'application/json')
-      .append("Content-Type", 'application/json'),
-      params: new HttpParams()
-      .append('userid', value['id'])
-      .append('name', value['name'])
-    }
-    that.http.post(`${that.url}/adduser`, options)
+      that.http.post(that.url + "/adduser", 
+      {
+        userid: value['id'],
+        name: value['name']
+      }).subscribe(
+        (val) => {
+            console.log("POST call successful value returned in body", 
+                        val);
+        },
+        response => {
+            console.log("POST call in error", response);
+        },
+        () => {
+            console.log("The POST observable is now completed.");
+        });
     })
   }
   
-  getUserAnimes(): Observable<any> {
+  getUserAnimes() {
     var that = this;
     console.log("GET USER ANIMES")
     this.storage.get('google_user').then(function(value) {
+      console.log("UserID:" + value['id'])
       if (value != null)
-        return that.http.get(that.url + "/useranimes?userid=" + value['id'])
+      {
+        console.log("Get:" + that.url + "/useranimes?userid=" + value['id'])
+        that.http.get(that.url + "/useranimes?userid=" + value['id']).subscribe(res => {
+            var animes:any = res;
+            var tmpArray: any[] = []
+            animes.forEach(element => {
+              tmpArray.push(element['media'])
+            })
+            that.userAnimesPage.animes = tmpArray;
+          }) 
+      }
     })
-    return null;
   }
 
   addUserAnime(Anime: any) {
     var that = this;
-    console.log("DRTFYIYGU:" + ((Anime['nextAiringEpisode'] != null) ? Anime['nextAiringEpisode']['id'] : "no airing"));
     this.storage.get('google_user').then(function(value) {
       console.log("UserID:" + value['id'])
-      const options = {
-        headers: new HttpHeaders()
-        .append('Accept', 'application/json')
-        .append("Content-Type", 'application/json'),
-      }
-      that.http.post(`${that.url}/addepisode`,
+      that.http.post(that.url + "/addepisode", 
       {
         userid: value['id'],
-        episodeid: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null)
-      }, options)
-      that.userAnimesPage.animes.push(Anime);
+        animeid: Anime['id'],
+        episodeid: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null),
+        airingtime: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null),
+        media: Anime
+      }).subscribe(
+        (val) => {
+            console.log("POST call successful value returned in body", 
+                        val);
+        },
+        response => {
+            console.log("POST call in error", response);
+        },
+        () => {
+            console.log("The POST observable is now completed.");
+        });
+      that.userAnimesPage.animes.push(Anime)
+      console.log("posted");
     })
   }
 
   removeUserAnime(Anime: any) {
+    var that = this;
     this.storage.get('google_user').then(function(value) {
-      const options = {
-        headers: new HttpHeaders()
-        .append('Accept', 'application/json')
-        .append("Content-Type", 'application/json'),
-        params: new HttpParams()
-        .append('userid', value['id'])
-        .append('animeid', Anime['id'])
-        .append('episodeid', ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null))
-        .append('airingtime', ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null))
-        .append('media', Anime)
-      }
-      this.http.post(`${this.url}/removeepisode`, options)
+      that.http.post(that.url + "/removeepisode", 
+      {
+        userid: value['id'],
+        animeid: Anime['id'],
+        episodeid: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null),
+        airingtime: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null),
+        media: Anime
+      }).subscribe(
+        (val) => {
+            console.log("POST call successful value returned in body", 
+                        val);
+        },
+        response => {
+            console.log("POST call in error", response);
+        },
+        () => {
+            console.log("The POST observable is now completed.");
+        });
     })
   }
 }

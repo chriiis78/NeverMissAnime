@@ -12,8 +12,8 @@ import { UserAnimesPage } from '../user-animes/user-animes.page'
 export class ListAnimesPage implements OnInit {
   animes: any[];
   searchTerm: string = '';
-  constructor(private animeService: AnimeService,
-              private userAnimesPage: UserAnimesPage) { 
+  userAnimesPage: UserAnimesPage
+  constructor(private animeService: AnimeService) { 
     var timer = interval(1000) 
     .subscribe((val) => { this.updateAiringTime(); });
   }
@@ -23,20 +23,22 @@ export class ListAnimesPage implements OnInit {
 
   searchChanged() {
     if (this.searchTerm != "")
-    this.animeService.searchData(this.searchTerm).subscribe(animes => {
+    this.animeService.searchData(this.searchTerm, this).subscribe(animes => {
       this.animes = animes
+      console.log("animes nb:" + JSON.stringify(this.animes.length));
+      console.log("user animes nb:" + JSON.stringify(this.userAnimesPage.animes.length));
+      console.log("user animes:" + JSON.stringify(this.userAnimesPage.animes));
+      var length = this.animes.length;
       for (var searchIdx = 0; searchIdx < this.animes.length; searchIdx++) {
-        if (this.userAnimesPage.animes == null)
-          break;
           for (var idx = 0; idx < this.userAnimesPage.animes.length; idx++)
           {
-            console.log("ELEMENT " + JSON.stringify(this.animes[searchIdx]['id']));
-            console.log(JSON.stringify(this.userAnimesPage.animes[idx]['id']));
+            console.log(this.animes[searchIdx]['title']['romaji'] + ":" + JSON.stringify(this.animes[searchIdx]['id']));
             if (this.animes[searchIdx]['id'] == this.userAnimesPage.animes[idx]['id'])
             {
               console.log(this.animes[searchIdx]['id'] + ":" +  this.userAnimesPage.animes[idx]['id'])
               this.animes.splice(searchIdx, 1)
-              break;
+              searchIdx-=1
+              break
             }
           }
       }
