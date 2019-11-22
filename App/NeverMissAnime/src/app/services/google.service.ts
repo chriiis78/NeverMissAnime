@@ -31,16 +31,16 @@ export class GoogleService {
 
   async nativeGoogleLogin(): Promise<firebase.auth.UserCredential> {
     try {
-  
+      console.log("Avant Avant log")
       const gplusUser = await this.gplus.login({
-        'webClientId': '192087476268-e1jf3mk8f1r8aaks096btsdcg8dmjgce.apps.googleusercontent.com',
+        'webClientId': '192087476268-j5a7ujk57d50tm782a2ndd53oj0i1nda.apps.googleusercontent.com',
         'offline': true,
         'scopes': 'profile email'
       })
-
+      console.log("Avant log")
       var credential = await this.afAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken))
       this.user.subscribe(user => { 
-        console.log("LOOOOOOOOOOOOOOOOOOOOOG")
+        console.log("LOOOOOOOOOOOOOOOOOOOOOGEEEEEEEEEEDDDDDDDDDDDDD")
 
         this.storage.set('google_user', {
         id: user.uid,
@@ -48,14 +48,14 @@ export class GoogleService {
         email: gplusUser.email,
         picture: gplusUser.imageUrl,
       }).then(value => {
-        console.log("LOOOOOOOOOOOOOOOOOOOOOG")
         this.animeService.userLoggedIn()
         this.userAnimesPage.refreshAnimes();
-        this.router.navigateByUrl("/tabs");
+        this.router.navigate(["/tabs"]);
         })
       })
       return credential;
     } catch(err) {
+      console.log("error log")
       console.log(err)
     }
   }
@@ -74,7 +74,7 @@ export class GoogleService {
 
         this.animeService.userLoggedIn()
         this.userAnimesPage.refreshAnimes();
-        this.router.navigateByUrl("/tabs");
+        this.router.navigate(["/tabs"]);
         })
     })
       return credential;
@@ -84,8 +84,6 @@ export class GoogleService {
   }
 
   googleLogin() {
-    this.webGoogleLogin();
-    return
     if (this.platform.is('cordova')) {
       this.nativeGoogleLogin();
     } else {

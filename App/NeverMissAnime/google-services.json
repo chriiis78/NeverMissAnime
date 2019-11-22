@@ -1,39 +1,52 @@
 {
   "project_info": {
-    "project_number": "123",
-    "firebase_url": "https://cordova-plugin-firebase.firebaseio.com",
-    "project_id": "cordova-plugin-firebase",
-    "storage_bucket": "cordova-plugin-firebase.appspot.com"
+    "project_number": "192087476268",
+    "firebase_url": "https://nevermissanime.firebaseio.com",
+    "project_id": "nevermissanime",
+    "storage_bucket": "nevermissanime.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123:android:123",
+        "mobilesdk_app_id": "1:192087476268:android:23b7b7acd3ce5dd6c9a989",
         "android_client_info": {
           "package_name": "com.lbb.nevermissanime"
         }
       },
       "oauth_client": [
         {
-          "client_id": "123.apps.googleusercontent.com",
+          "client_id": "192087476268-vbba7dn31ra52aqtjj4cbcg39ldkl9uo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lbb.nevermissanime",
+            "certificate_hash": "06c984e8746e67ef382bffbeaee7af98666f0629"
+          }
+        },
+        {
+          "client_id": "192087476268-j5a7ujk57d50tm782a2ndd53oj0i1nda.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "123"
+          "current_key": "AIzaSyBglyM1UMoD4a_9Gp_GazRqARF7VCWg3ng"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192087476268-j5a7ujk57d50tm782a2ndd53oj0i1nda.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "192087476268-e1jf3mk8f1r8aaks096btsdcg8dmjgce.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lbb.nevermissanime"
+              }
+            }
+          ]
         }
       }
     }

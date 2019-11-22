@@ -35,14 +35,14 @@ export class AppComponent {
         {
           this.userAnimesPage.refreshAnimes();
           this.splashScreen.hide();
-          this.router.navigateByUrl("/tabs");
+          this.router.navigate(["/tabs"]);
           console.log("Google_user is saved");
         }
         else
         {
           console.log("Google_user is no saved");
           this.splashScreen.hide();
-          this.router.navigateByUrl("/login");
+          this.router.navigate(["/login"]);
         }
       })
       this.statusBar.styleDefault();
