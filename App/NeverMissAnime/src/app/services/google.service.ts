@@ -24,7 +24,6 @@ export class GoogleService {
     private platform: Platform,
     private router: Router,
     private storage: Storage,
-    private userAnimesPage: UserAnimesPage,
     private animeService: AnimeService) { 
       this.user = this.afAuth.authState;
     }
@@ -49,7 +48,6 @@ export class GoogleService {
         picture: gplusUser.imageUrl,
       }).then(value => {
         this.animeService.userLoggedIn()
-        this.userAnimesPage.refreshAnimes();
         this.router.navigate(["/tabs"]);
         })
       })
@@ -73,7 +71,6 @@ export class GoogleService {
       }).then(value => {
 
         this.animeService.userLoggedIn()
-        this.userAnimesPage.refreshAnimes();
         this.router.navigate(["/tabs"]);
         })
     })

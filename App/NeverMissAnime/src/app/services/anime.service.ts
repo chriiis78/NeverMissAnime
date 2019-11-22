@@ -57,6 +57,7 @@ export class AnimeService {
             console.log("The POST observable is now completed.");
         });
     })
+    this.userAnimesPage.refreshAnimes();
   }
   
   getUserAnimes() {
