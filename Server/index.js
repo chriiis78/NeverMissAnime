@@ -7,6 +7,7 @@ require('isomorphic-fetch');
 var fs = require("fs")
 let util = require("util")
 var cors = require('cors');
+var cron = require('cron').CronJob
 var app = express()
 
 mongoose.connect("mongodb://localhost:27017/users", {useNewUrlParser: true, useUnifiedTopology: true})
@@ -23,7 +24,7 @@ app.get("/", async (req, res) => {
 })
 
 app.post("/addepisode", async (req, res) => {
-    console.log(req.body)
+    console.log("addepisode")
     let userid = req.body.userid
     let animeid = req.body.animeid
     let episodeid = req.body.episodeid
@@ -83,6 +84,7 @@ app.post("/adduser", async (req, res) => {
 
 app.get("/useranimes", async (req, res) => {
     let userid = req.query.userid
+    console.log("useranimes " + userid)
     let list = await episodes.find({userid : userid})
     res.json(list)
 })
@@ -93,6 +95,7 @@ app.get("/search", async (req, response) => {
         res.json(null)
         return
     }
+    console.log("search " + keyword)
     var query = fs.readFileSync("./model/anilistsearch.txt", "utf-8").replace("KEYWORD", keyword)
     fetch('https://graphql.anilist.co', {
         method: 'POST',
@@ -101,7 +104,26 @@ app.get("/search", async (req, response) => {
     })
     .then(res => res.json())
     .then(res => {
-        console.log(JSON.stringify(res.data, null, 2))
+        response.json(res.data)
+    });
+    
+})
+
+app.get("/anime", async (req, response) => {
+    let id = req.query.id
+    if (!id) {
+        res.json(null)
+        return
+    }
+    console.log("anime " + id)
+    var query = fs.readFileSync("./model/anilistanime.txt", "utf-8").replace("ID", id)
+    fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: query }),
+    })
+    .then(res => res.json())
+    .then(res => {
         response.json(res.data)
     });
     
@@ -112,5 +134,63 @@ app.get("/user", async (req, res) => {
     let user = await users.findOne({userid : id})
     res.json(user)
 })
+
+function getAnime(id) {
+    var query = fs.readFileSync("./model/anilistanime.txt", "utf-8").replace("ID", id)
+    fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: query }),
+    })
+    .then(res => res.json())
+    .then(res => {
+        return res.data
+    }).catch((error) => {
+        console.log(error)
+        return null
+    });
+};
+
+new cron("* * * * *", async () => {
+    console.log("cron")
+    let currentdate = Math.round(Date.now() / 1000)
+    console.log(currentdate)
+    let list = await episodes.find({airingtime: { $lte: currentdate }})
+    console.log(list)
+
+    for (i in list) {
+        //notifyUser(item)
+        var query = fs.readFileSync("./model/anilistanime.txt", "utf-8").replace("ID", list[i]["animeid"])
+        fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: query }),
+        })
+        .then(res => res.json())
+        .then(async res => {
+            res.data
+            let data = res.data.Media
+            if (!data || !data.nextAiringEpisode) {
+                await episodes.deleteOne({userid : userid, animeid: data.id})
+                return
+            }
+
+            let newep = new episodes({
+                userid : list[i]["userid"],
+                animeid : data.id,
+                episodeid : data.nextAiringEpisode.id,
+                airingtime : data.nextAiringEpisode.airingAt,
+                media : data
+            })
+        
+            newep = await episodes.findOneAndUpdate({userid: list[i]["userid"], animeid: data.id}, {episodeid: data.nextAiringEpisode.id, airingtime: data.nextAiringEpisode.airingAt, media: JSON.stringify(data)}, {upsert: true, new: true, useFindAndModify: true, setDefaultOnInsert: newep})
+            console.log(newep)
+            console.log("UPDATE ANIME EPISODE")
+        }).catch((error) => {
+            console.log(error)
+        });
+    }
+
+}, null, false) // true pour activer
 
 app.listen(8080)

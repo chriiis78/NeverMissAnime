@@ -1,0 +1,20 @@
+{
+    Media (id:ID, type: ANIME){
+        id
+            title{
+                romaji
+                english
+                native
+            }
+            nextAiringEpisode{
+                id
+                airingAt
+                timeUntilAiring
+                episode
+            }
+            coverImage{
+                medium
+                color
+            }
+    }
+}
