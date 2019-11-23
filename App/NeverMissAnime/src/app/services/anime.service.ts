@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { UserAnimesPage } from '../user-animes/user-animes.page';
 import { ListAnimesPage } from '../list-animes/list-animes.page';
 import { stringify } from 'querystring';
+import { Firebase } from '@ionic-native/firebase/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class AnimeService {
   searchAnimes: Observable<any>
   userAnimesPage: UserAnimesPage;
   constructor(private http: HttpClient,
-              private storage: Storage) { }
+              private storage: Storage,
+              public firebaseNative: Firebase) { }
 
   searchData(title: string, listAnimePage: ListAnimesPage): Observable<any> {
     if (listAnimePage.userAnimesPage == null)
@@ -40,11 +42,12 @@ export class AnimeService {
   {
     console.log("UserLogged")
     var that = this;
-    this.storage.get('google_user').then(function(value) {
+    this.storage.get('google_user').then(async function(value) {
       that.http.post(that.url + "/adduser", 
       {
         userid: value['id'],
-        name: value['name']
+        name: value['name'],
+        pushtoken: await that.firebaseNative.getToken()
       }).subscribe(
         (val) => {
             console.log("POST call successful value returned in body", 

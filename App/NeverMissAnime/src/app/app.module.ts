@@ -17,8 +17,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule }  from 'angularfire2/auth'
 import { IonicStorageModule } from '@ionic/storage';
 
+import { Firebase } from '@ionic-native/firebase/ngx';
 import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
-import { FCM } from '@ionic-native/fcm/ngx'
+import { FcmService } from './services/fcm.service';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBbz94jZI4Uy_P4yAKJlAs_CG9gcFNUkZ4",
@@ -45,7 +46,8 @@ const firebaseConfig = {
     IonicStorageModule.forRoot()
   ],
   providers: [
-    FCM,
+    Firebase,
+    FcmService,
     StatusBar,
     SplashScreen,
     GooglePlus,

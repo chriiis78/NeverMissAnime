@@ -6,7 +6,10 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-import { FCM } from '@ionic-native/fcm/ngx';
+import { FcmService } from './services/fcm.service';
+import { ToastController } from '@ionic/angular';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +22,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     private storage: Storage,
     private router: Router,
-    private fcm: FCM
+    private fcm: FcmService,
+    private toastCtrl: ToastController
   ) {
     this.initializeApp();
   }
@@ -43,23 +47,21 @@ export class AppComponent {
       })
       this.statusBar.styleDefault();
       
-      // FIREBASE PUSH NOTIFICATION
-      this.fcm.getToken().then(token => {
-        console.log(token);
-      });
-      this.fcm.onTokenRefresh().subscribe(token => {
-        console.log(token);
-      });
-      this.fcm.onNotification().subscribe(data => {
-        console.log(data);
-        if (data.wasTapped) {
-          console.log('Received in background');
-          this.router.navigate([data.landing_page, data.price]);
-        } else {
-          console.log('Received in foreground');
-          this.router.navigate([data.landing_page, data.price]);
-        }
-      });
+      // Get a FCM token
+      this.fcm.getToken()
+
+      // Listen to incoming messages
+      this.fcm.listenToNotifications().pipe(
+        tap(async msg => {
+          // show a toast
+          var toast = this.toastCtrl.create({
+            message: msg.body,
+            duration: 3000
+          });
+          (await toast).present();
+        })
+      )
+      .subscribe()
 
     });;
   }

@@ -7,7 +7,12 @@ require('isomorphic-fetch');
 var fs = require("fs")
 let util = require("util")
 var cors = require('cors');
-var cron = require('cron').CronJob
+var cron = require('cron').CronJob;
+
+var FCM = require('fcm-node');
+var serverKey = 'AAAALLlOSCw:APA91bGeR8TFpphB6coYMkBxtdVVoZcW33qpIsoMZlOnRdr9u_KSLa5mKYhxLATAruOwkAAxM6E3BSHEHwnwH3QWLgmtRIkYwxEtAQ4XxpCiEZOahMIq-mSVB2ZFVH-VJJRvm8d-co_T';
+var fcm = new FCM(serverKey);
+
 var app = express()
 
 mongoose.connect("mongodb://localhost:27017/users", {useNewUrlParser: true, useUnifiedTopology: true})
@@ -66,18 +71,20 @@ app.post("/adduser", async (req, res) => {
     console.log(req.body)
     let userid = req.body.userid
     let name = req.body.name
+    let pushtoken = req.body.pushtoken
     
-    if (!userid || !name) {
+    if (!userid || !name || !pushtoken) {
         res.send("Invalid request")
         return
     }
 
     let newuser = new users({
         userid : userid,
-        name : name
+        name : name,
+        pushtoken : pushtoken
     })
 
-    newuser = await users.findOneAndUpdate({userid: userid}, {name: name}, {upsert: true, new: true, setDefaultOnInsert: newuser})
+    newuser = await users.findOneAndUpdate({userid: userid}, {name: name, pushtoken: pushtoken}, {upsert: true, new: true, setDefaultOnInsert: newuser})
     res.json(newuser)
     return
 })
@@ -151,6 +158,34 @@ function getAnime(id) {
     });
 };
 
+async function notifyUser(data) { 
+
+    let user = await users.findOne({userid : data.userid})
+    var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+        to: user.pushtoken, 
+        //collapse_key: 'your_collapse_key',
+        
+        notification: {
+            title: (data.title.english) ? data.title.english : data.title.romaji, 
+            body: 'est en diffusion à la télévision !'
+        },
+        /*
+        data: {  //you can send only notification or only data(or include both)
+            my_key: 'my value',
+            my_another_key: 'my another value'
+        }
+        */
+    };
+    
+    fcm.send(message, function(err, response){
+        if (err) {
+            console.log("Something has gone wrong!");
+        } else {
+            console.log("Successfully sent with response: ", response);
+        }
+    });
+}
+//notifyUser(null)
 new cron("* * * * *", async () => {
     console.log("cron")
     let currentdate = Math.round(Date.now() / 1000)
@@ -159,7 +194,7 @@ new cron("* * * * *", async () => {
     console.log(list)
 
     for (i in list) {
-        //notifyUser(item)
+        notifyUser(list[i])
         var query = fs.readFileSync("./model/anilistanime.txt", "utf-8").replace("ID", list[i]["animeid"])
         fetch('https://graphql.anilist.co', {
             method: 'POST',
