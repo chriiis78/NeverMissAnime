@@ -14,8 +14,6 @@ export class ListAnimesPage implements OnInit {
   searchTerm: string = '';
   userAnimesPage: UserAnimesPage
   constructor(private animeService: AnimeService) { 
-    var timer = interval(1000) 
-    .subscribe((val) => { this.updateAiringTime(); });
   }
 
   ngOnInit() {
@@ -28,8 +26,13 @@ export class ListAnimesPage implements OnInit {
       console.log("animes nb:" + JSON.stringify(this.animes.length));
       console.log("user animes nb:" + JSON.stringify(this.userAnimesPage.animes.length));
       console.log("user animes:" + JSON.stringify(this.userAnimesPage.animes));
-      var length = this.animes.length;
       for (var searchIdx = 0; searchIdx < this.animes.length; searchIdx++) {
+          if (this.animes[searchIdx]['nextAiringEpisode'] == null)
+          {
+            this.animes.splice(searchIdx, 1)
+            searchIdx-=1
+            continue
+          }
           for (var idx = 0; idx < this.userAnimesPage.animes.length; idx++)
           {
             console.log(this.animes[searchIdx]['title']['romaji'] + ":" + JSON.stringify(this.animes[searchIdx]['id']));
@@ -42,16 +45,6 @@ export class ListAnimesPage implements OnInit {
             }
           }
       }
-    });
-  }
-
-  updateAiringTime()
-  {
-    if (this.animes == null)
-      return;
-    this.animes.forEach(element => {
-      if (element["nextAiringEpisode"])
-        element["nextAiringEpisode"]["timeUntilAiring"] -= 1;
     });
   }
 

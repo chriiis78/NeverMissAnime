@@ -7,18 +7,32 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let item of animes">
-      <ion-card style="width: 100%;">
-        <ion-card-content>
-            <img [src]="item.coverImage.medium"/>
-            <ion-card-title *ngIf="item.title.english;else noEnglishTitle" style="font:x-large">{{ item.title.english }}</ion-card-title>
-            <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
-            <ion-card-subtitle *ngIf="item.nextAiringEpisode">
-            Next airing episode : {{ item.nextAiringEpisode.episode }}
-            </ion-card-subtitle>
-            <ion-label *ngIf="item.nextAiringEpisode"> {{ item.nextAiringEpisode.timeUntilAiring * 1000 | date: "dd' days and 'HH:mm:ss" }} </ion-label>
-            <ion-button shape="round" (click)="removeAnime(item)">Remove</ion-button>
-        </ion-card-content>
-      </ion-card>
+
+        <ion-card>
+
+                      
+             <ion-card-content>
+                <div style="width: 50px; float: left;white-space:nowrap;">
+                    <img [src]="item.coverImage.medium" style="width: 50px; height: 75px;" item-left/>
+                </div>
+                <div style="width: auto; float: right;white-space:nowrap;">
+                      <p *ngIf="item.title.english;else noEnglishTitle">{{ item.title.english }}</p>
+                      <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
+                      <p *ngIf="item.nextAiringEpisode">
+                          Next airing episode : {{ item.nextAiringEpisode.episode }}
+                      </p>
+                            <p>
+                                Broadcast in :
+                            </p>
+                        <p>  {{ item.timeCounter }}  </p>
+                        <ion-button shape="round" (click)="removeAnime(item)" style="float: right;">Remove</ion-button>
+                </div>
+              </ion-card-content>
+
+
+      
+        
+          </ion-card>
     </ion-item>
   </ion-list>
 </ion-content>

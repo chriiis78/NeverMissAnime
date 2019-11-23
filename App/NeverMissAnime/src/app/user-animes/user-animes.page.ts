@@ -24,8 +24,15 @@ export class UserAnimesPage implements OnInit {
   updateAiringTime()
   {
     this.animes.forEach(element => {
-      if (element["nextAiringEpisode"] != null)
-        element["nextAiringEpisode"]["timeUntilAiring"] -= 1;
+      var day = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) / 86400);
+      var hour = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) / 3600 % 24);
+      var min = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) % 3600 / 60);
+      var sec = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) % 3600 % 60);
+      element['timeCounter'] =
+      day + " " + ((day > 0) ? 'Days' : 'Day') + " and " +
+      hour + " " + ((hour > 0) ? 'Hours' : 'Hour') + " " +
+      min + " " + ((min > 0) ? 'Minutes' : 'Minute') + " " +
+      sec + " " + ((sec > 0) ? 'Seconds' : 'Second')
     });
   }
 

@@ -75,7 +75,7 @@ export class AnimeService {
             var animes:any = res;
             var tmpArray: any[] = []
             animes.forEach(element => {
-              tmpArray.push(element['media'])
+              tmpArray.push(JSON.parse(element['media']))
             })
             that.userAnimesPage.animes = tmpArray;
           }) 

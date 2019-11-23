@@ -8,20 +8,18 @@
   <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="searchChanged($event)"></ion-searchbar>
  
   <ion-list>
- 
-    <ion-button  *ngFor="let item of animes" (click)="addAnime(item)">
-      
-      <ion-avatar slot="start">
-        <img [src]="item.coverImage.medium">
-      </ion-avatar>
- 
-      <ion-label text-wrap>
-        <h3 *ngIf="item.title.english;else noEnglishTitle">{{ item.title.english }}</h3>
-        <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
-      </ion-label>
-      <ion-label *ngIf="item.nextAiringEpisode"> {{ item.nextAiringEpisode.timeUntilAiring * 1000 | date: "dd' days and 'HH:mm:ss" }} </ion-label>
- 
-    </ion-button>
- 
+      <ion-item *ngFor="let item of animes" (click)="addAnime(item)">
+          <ion-card>        
+              <ion-card-content>
+                 <div style="width: 50px; float: left;white-space:nowrap;">
+                     <img [src]="item.coverImage.medium" style="width: 50px; height: 75px;" item-left/>
+                 </div>
+                 <div style="width: auto; float: right;white-space:nowrap;">
+                       <p *ngIf="item.title.english;else noEnglishTitle">{{ item.title.english }}</p>
+                       <ng-template #noEnglishTitle>{{ item.title.romaji }}</ng-template>
+                 </div>
+               </ion-card-content>
+           </ion-card>
+        </ion-item> 
   </ion-list>
 </ion-content>
