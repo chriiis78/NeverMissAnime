@@ -56,14 +56,14 @@ app.post("/addepisode", async (req, res) => {
 
 app.post("/removeepisode", async (req, res) => {
     let userid = req.body.userid
-    let episodeid = req.body.episodeid
+    let animeid = req.body.animeid
     
-    if (!userid || !episodeid) {
+    if (!userid || !animeid) {
         res.send("Invalid request")
         return
     }
 
-    let ep = await episodes.deleteOne({userid : userid, episodeid: episodeid})
+    let ep = await episodes.deleteMany({userid : userid, animeid: animeid})
     res.json(ep)
 })
 
@@ -93,6 +93,7 @@ app.get("/useranimes", async (req, res) => {
     let userid = req.query.userid
     console.log("useranimes " + userid)
     let list = await episodes.find({userid : userid})
+    console.log(list)
     res.json(list)
 })
 
@@ -161,13 +162,15 @@ function getAnime(id) {
 async function notifyUser(data) { 
 
     let user = await users.findOne({userid : data.userid})
+    let media = JSON.parse(data.media)
+    console.log(media.title.english)
     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
         to: user.pushtoken, 
         //collapse_key: 'your_collapse_key',
         
         notification: {
-            title: (data.title.english) ? data.title.english : data.title.romaji, 
-            body: 'est en diffusion à la télévision !'
+            title: (media.title.english) ? media.title.english : media.title.romaji, 
+            body: "Episode : " + media.nextAiringEpisode.episode + ' est en direct à la télévision !'
         },
         /*
         data: {  //you can send only notification or only data(or include both)
@@ -226,6 +229,6 @@ new cron("* * * * *", async () => {
         });
     }
 
-}, null, false) // true pour activer
+}, null, true) // true pour activer
 
 app.listen(8080)
