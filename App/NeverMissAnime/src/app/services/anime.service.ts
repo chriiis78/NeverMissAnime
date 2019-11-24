@@ -75,7 +75,7 @@ export class AnimeService {
             var animes:any = res;
             var tmpArray: any[] = []
             animes.forEach(element => {
-              tmpArray.push(JSON.parse(element['media']))
+              tmpArray.push(element['media'])
             })
             that.userAnimesPage.animes = tmpArray;
           }) 
@@ -92,7 +92,7 @@ export class AnimeService {
         userid: value['id'],
         animeid: Anime['id'],
         episodeid: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null),
-        airingtime: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null),
+        airingtime: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['airingAt'] : null),
         media: Anime
       }).subscribe(
         (val) => {
@@ -118,7 +118,7 @@ export class AnimeService {
         userid: value['id'],
         animeid: Anime['id'],
         episodeid: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['id'] : null),
-        airingtime: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['timeUntilAiring'] : null),
+        airingtime: ((Anime['nextAiringEpisode']) ? Anime['nextAiringEpisode']['airingAt'] : null),
         media: Anime
       }).subscribe(
         (val) => {
