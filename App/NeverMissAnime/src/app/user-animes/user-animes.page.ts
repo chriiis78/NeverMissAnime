@@ -26,10 +26,10 @@ export class UserAnimesPage implements OnInit {
   updateAiringTime()
   {
     this.animes.forEach(element => {
-      var day = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) / 86400);
-      var hour = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) / 3600 % 24);
-      var min = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) % 3600 / 60);
-      var sec = Math.round((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) % 3600 % 60);
+      var day = Math.trunc((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) / 86400);
+      var hour = Math.trunc((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) / 3600 % 24);
+      var min = Math.trunc((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) % 3600 / 60);
+      var sec = Math.trunc((element['nextAiringEpisode']['airingAt'] - Date.now() / 1000) % 3600 % 60);
       element['timeCounter'] =
       day + " " + ((day > 0) ? 'Days' : 'Day') + " and " +
       hour + " " + ((hour > 0) ? 'Hours' : 'Hour') + " " +
