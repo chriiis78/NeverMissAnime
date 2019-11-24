@@ -162,7 +162,7 @@ function getAnime(id) {
 async function notifyUser(data) { 
 
     let user = await users.findOne({userid : data.userid})
-    let media = JSON.parse(data.media)
+    let media = data.media
     console.log(media.title.english)
     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
         to: user.pushtoken, 
@@ -221,7 +221,7 @@ new cron("* * * * *", async () => {
                 media : data
             })
         
-            newep = await episodes.findOneAndUpdate({userid: list[i]["userid"], animeid: data.id}, {episodeid: data.nextAiringEpisode.id, airingtime: data.nextAiringEpisode.airingAt, media: JSON.stringify(data)}, {upsert: true, new: true, useFindAndModify: true, setDefaultOnInsert: newep})
+            newep = await episodes.findOneAndUpdate({userid: list[i]["userid"], animeid: data.id}, {episodeid: data.nextAiringEpisode.id, airingtime: data.nextAiringEpisode.airingAt, media: data}, {upsert: true, new: true, useFindAndModify: true, setDefaultOnInsert: newep})
             console.log(newep)
             console.log("UPDATE ANIME EPISODE")
         }).catch((error) => {

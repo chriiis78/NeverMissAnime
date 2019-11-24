@@ -106,5 +106,5 @@
     <feature name="Calendar">
         <param name="android-package" value="nl.xservices.plugins.Calendar" />
     </feature>
-    <allow-navigation href="http://localhost:8100" sessionid="2a8f7495" />
+    <allow-navigation href="http://localhost:8100" sessionid="fdd7885d" />
 </widget>

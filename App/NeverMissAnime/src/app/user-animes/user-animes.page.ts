@@ -35,6 +35,11 @@ export class UserAnimesPage implements OnInit {
       hour + " " + ((hour > 0) ? 'Hours' : 'Hour') + " " +
       min + " " + ((min > 0) ? 'Minutes' : 'Minute') + " " +
       sec + " " + ((sec > 0) ? 'Seconds' : 'Second')
+      element['timeCounter'] =
+      day + " " + ((day > 0) ? 'days' : 'day') + " and " +
+      hour + "h "+
+      min +"m "+
+      sec +"s"
     });
   }
 
