@@ -21,6 +21,8 @@ import { Firebase } from '@ionic-native/firebase/ngx';
 import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from './services/fcm.service';
 
+import { Calendar } from '@ionic-native/calendar/ngx'
+
 const firebaseConfig = {
   apiKey: "AIzaSyBbz94jZI4Uy_P4yAKJlAs_CG9gcFNUkZ4",
   authDomain: "nevermissanime.firebaseapp.com",
@@ -46,6 +48,7 @@ const firebaseConfig = {
     IonicStorageModule.forRoot()
   ],
   providers: [
+    Calendar,
     Firebase,
     FcmService,
     StatusBar,
