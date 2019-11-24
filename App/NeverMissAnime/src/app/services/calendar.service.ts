@@ -11,7 +11,7 @@ export class CalendarService {
   }
 
   addEvent(title, text, start) {
-    
+    console.log("addEvent " + title)    
     this.calendar.createEvent(title, null, text, start, new Date(start + 3600000))
 
   } 
