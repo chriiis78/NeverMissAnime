@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AnimeService } from '../services/anime.service'
+import { CalendarService } from '../services/calendar.service'
 
 @Component({
   selector: 'app-user-animes',
@@ -10,7 +11,8 @@ import { AnimeService } from '../services/anime.service'
 })
 export class UserAnimesPage implements OnInit {
   animes: any[] = [];
-  constructor(private animeService: AnimeService) {
+  constructor(private animeService: AnimeService,
+              private calendarService: CalendarService) {
     console.log("CONSCTRU USER ANIME")
     animeService.setUserAnimePage(this);
     this.refreshAnimes()
@@ -53,5 +55,13 @@ export class UserAnimesPage implements OnInit {
         break;
       }
     }
+  }
+
+  addCalendar(Anime: any) {
+    this.calendarService.addEvent(
+      (Anime['title']['english']) ? Anime['title']['english'] : Anime['title']['romaji'],
+      "Episode: " + Anime['nextAiringEpisode']['episode'],
+      new Date(Anime['nextAiringEpisode']['airingAt'] * 1000)
+    )
   }
 }
